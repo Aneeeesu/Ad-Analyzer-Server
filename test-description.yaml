@@ -1,0 +1,25 @@
+Labels:
+  - girlfriend
+  - counter-strike
+  - anime
+  - else
+Tasks:
+  - Action: doomscroll
+    Application: TikTok
+    Action_args:
+      - anime
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 300
+
+Events:
+  - Action: playSound
+    Action_args: TRAP_ELEVATOR.mp3
+    Application: TikTok
+    TriggerConditions:
+      - Type: Timeout
+        Timeout: 5
+
+
+
