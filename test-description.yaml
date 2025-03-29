@@ -3,23 +3,36 @@ Labels:
   - counter-strike
   - anime
   - else
+  - Cats
+  - Dogs
 Tasks:
-  - Action: doomscroll
+  - Action: Search
+    Application: TikTok
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 300
+
+  - Action: Doomscroll
     Application: TikTok
     Action_args:
       - anime
     #Action_args: 
     Conditions:
       - Type: Timeout
-        Timeout: 300
+        Timeout: 600
 
 Events:
-  - Action: playSound
-    Action_args: TRAP_ELEVATOR.mp3
+  - Action: SendMessage
+    Action_args:
+      - "aneeeesu"
+      - "Still tiktok doesn't allow us to text?"
     Application: TikTok
     TriggerConditions:
       - Type: Timeout
-        Timeout: 5
+        Timeout: 120
 
 
 

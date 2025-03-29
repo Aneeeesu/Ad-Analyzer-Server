@@ -6,15 +6,16 @@ import random
 import time as t
 from time import sleep
 from ActionContext import ActionContext
+import imageAnalyzer as ia
 
-async def openDM(username : str, monitor : LogMonitor):
-    await ac.broadcastAdb(
-    "adb",
-    f"shell am broadcast -a com.tenshite.inputmacros.TikTok.OpenDMs --es username '{username}'"
-)
 
-async def sendDM(message: str, monitor : LogMonitor):
-    await ac.broadcastAdb("TikTok.SendDM","--es message ily",monitor)
+async def openDM(username : str, monitor : LogMonitor, context : ActionContext):
+    await ac.broadcastAdb("TikTok.OpenDMs",f"--es username \\\"{username}\\\"".replace("'","\\\'"),monitor)
+
+
+async def sendDM(message: str, monitor : LogMonitor, context : ActionContext):
+    await ac.broadcastAdb("TikTok.SendDM",f"--es message \\\"{message}\\\"".replace("'","\\\'"),monitor)
+
 
 async def goToHome(monitor : LogMonitor, context : ActionContext):
     await ac.broadcastAdb("TikTok.NavigateToHome","",monitor)
@@ -34,9 +35,30 @@ def playSound(sound : str,monitor : ac.LogMonitor,context : ActionContext):
     playsound(f"./sounds/{sound}")
 
 
+async def Search(searchedText : str,monitor : ac.LogMonitor, context : ActionContext):
+    await ac.broadcastAdb("TikTok.Search",f"--es query {searchedText}",monitor)
+
+    await swipeDown(monitor,context)
+
+    timeStamp = t.time()
+    filename = f"searchDoomScroll-{timeStamp}"
+    ac.takeScreenshot(filename)
+    results = ia.analyzeImage(context.image_analyzer,filename,context.labels)
+    #find first result that matches label
+    result = next((result for result in results if result['label'] == searchedText), None)
+    if result is None:
+        
+        raise Exception("Labels do not match")
+    if result['score'] > 0.9:
+        await like(monitor,context)
+    if result['score'] > 0.5 and random.random() > 0.5:
+        sleep(abs(random.gauss(10,2)+5))
+        
+    context.add_result(results,timeStamp)
+
 async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionContext):
-    await goToHome(monitor)
-    await swipeDown(monitor)
+    await goToHome(monitor,context)
+    await swipeDown(monitor,context)
     timeStamp = t.time()
     filename = f"doomscroll-{timeStamp}"
     ac.takeScreenshot(filename)
@@ -46,8 +68,13 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
     if result is None:
         raise Exception("Labels do not match")
     if result['score'] > 0.9:
-        await like(monitor)
+        await like(monitor,context)
     if result['score'] > 0.5 and random.random() > 0.5:
         sleep(abs(random.gauss(10,2)+5))
         
     context.add_result(results,timeStamp)
+
+
+async def sendMessage(username:str,message:str,monitor : ac.LogMonitor,context : ActionContext):
+    await openDM(username,monitor,context)
+    await sendDM(message,monitor,context)

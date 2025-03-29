@@ -3,6 +3,7 @@ import uuid
 from threading import Thread
 import time
 import asyncio
+import select
 
 from transformers import pipeline
 # load pipe
@@ -26,14 +27,20 @@ class LogMonitor:
         """
 
         process = subprocess.Popen(
-            f"adb shell \"ps -A | grep {process_name}\"",
+            f"adb shell ps -A | grep {process_name}",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            shell=True
+            shell=True,
+            text=True
         )
         stdout, stderr = process.communicate()
-        string = [value for value in stdout.decode("utf-8").split(" ") if value]
-        pid = [value for value in stdout.decode("utf-8").split(" ") if value][1]
+        print("Raw output:", repr(stdout))
+        print("STDERR:", stderr)
+
+
+        string = [value for value in stdout.split() if value]
+        print(string)
+        pid = [value for value in stdout.split() if value][1]
 
         self.tag = tag
         self.on_match_callback = on_match_callback
@@ -77,25 +84,32 @@ class LogMonitor:
                         break
 
                     try:
-                        line = logcat_proc.stdout.readline()
-                        if line:
-                            print(f"Matching log: {line.strip()}")
-                            self.on_match_callback(line.strip())
+                        
+                        rline,_ ,_= select.select([logcat_proc.stdout],[],[],1)
+                        if rline:
+                            while True:
+                                line = logcat_proc.stdout.readline()
+                                if not line:  # If no more lines are available, break out
+                                    break
+                                print(f"Matching log: {line.strip()}")
+                                self.on_match_callback(line.strip())
 
-                            tokens = line.split()
-                            if(len(tokens) <= 6):
-                                continue
-                            print(f"Matched ID: {tokens[6]}")
-                            if tokens and is_valid_uuid(tokens[6]):
-                                id = uuid.UUID(tokens[6])
-                                if id in self.match_futures:
-                                    future = self.match_futures[id]
-                                    # Use an async wrapper function
-                                    asyncio.run_coroutine_threadsafe(self._set_future_result(future, line), self.loop)
+                                tokens = line.split()
+                                if(len(tokens) <= 6):
+                                    continue
+                                print(f"Matched ID: {tokens[6]}")
+                                if tokens and is_valid_uuid(tokens[6]):
+                                    id = uuid.UUID(tokens[6])
+                                    if id in self.match_futures:
+                                        future = self.match_futures[id]
+                                        # Use an async wrapper function
+                                        asyncio.run_coroutine_threadsafe(self._set_future_result(future, line), self.loop)
                         else:
                             time.sleep(0.1)  # Wait for new logs
+
                     except Exception as e:
                         print(f"Error processing log line: {e}")
+                logcat_proc.kill()
         except Exception as e:
             print(f"Error in log monitoring: {e}")
 
@@ -148,4 +162,18 @@ async def broadcastAdb(command,broadcastArgs,logMonitor : LogMonitor):
     return future.result()
 
 def takeScreenshot(filename:str):
-    execute("adb", "exec-out screencap -p", f"./cache/{filename}.png")
+    process = subprocess.Popen(
+        ["adb", "exec-out", "screencap", "-p"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+
+    stdout, stderr = process.communicate()
+    # Check if there were any errors
+    if stderr:
+        print("Error:", stderr.decode())
+    else:
+        # Write the binary output (screenshot data) to the file
+        with open(f"./.cache/{filename}.png", 'wb') as f:
+            f.write(stdout)
+        print(f"Screenshot saved to {filename}.png")

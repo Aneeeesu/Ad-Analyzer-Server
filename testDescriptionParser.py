@@ -11,6 +11,9 @@ from playsound import playsound
 import random
 from time import sleep
 from ActionContext import ActionContext
+from task import Task
+from event import Event
+
 
 actionMap = {
     'TikTok': {
@@ -18,8 +21,10 @@ actionMap = {
         "SwipeUp": (tiktok.swipeUp, []),
         "OpenDM": (tiktok.openDM, [str]),
         "SendDM": (tiktok.sendDM, [str]),
+        "SendMessage": (tiktok.sendMessage, [str,str]),
         "NavigateToHome": (tiktok.goToHome, []),
-        "doomscroll": (tiktok.doomscroll, [str]),
+        "Search": (tiktok.Search,[str]),
+        "Doomscroll": (tiktok.doomscroll, [str]),
         "playSound": (tiktok.playSound, [str])
     }
 }
@@ -41,57 +46,8 @@ def percentage_condition(percentage : float,label :str, timeout : float, context
 
 def timeout_condition(timeout : int, context : ActionContext):
     return t.time() - context.start_timestamp > timeout
-    
 
-class Event:
-    triggerConditions : Callable[[ActionContext], bool]
-    action : Callable[[...], None]
-    action_args : list
-    def __init__(self):
-        self.triggerConditions = None
-        self.action = None
-        self.action_args = []
-        
-    def execute(self, monitor : ac.LogMonitor, context : ActionContext):
-        self.action_args.append(monitor)
-        self.action_args.append(context)
-        print(self.action_args)
-        self.action(*self.action_args)
-    
-    
-class Task:
-    action : Callable[[...], None]
-    action_args : list
-    mutex : Semaphore
-    
-    # arg is TestFeedback and returns bool
-    conditionsToStop : Callable[[ActionContext], bool] | None
-    def __init__(self):
-        self.mutex = Semaphore(1)
-        self.conditionsToStop = None
-        self.action = None
-        self.action_args = []
-        
-        
-    async def execute(self, monitor : ac.LogMonitor, context : ActionContext):
-        self.action_args.append(monitor)
-        self.action_args.append(context)
-        if self.conditionsToStop is None:
-            self.mutex.acquire()
-            await self.action(*self.action_args)
-            self.mutex.release()
-            return
-        
-        while not self.conditionsToStop(context):
-            self.mutex.acquire()
-            await self.action(*self.action_args)
-            self.mutex.release()
-            
-    def pause(self):
-        self.mutex.acquire()
-        
-    def resume(self):
-        self.mutex.release()
+
     
     
     

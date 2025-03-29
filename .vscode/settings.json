@@ -1,0 +1,13 @@
+{
+    "python.languageServer": "Pylance",
+    "python.autoComplete.enable": true,
+    "python.autoComplete.extraPaths": [
+        "./env/lib/python3.13/site-packages",
+        "./env/lib64/python3.13/site-packages"
+    ],
+
+    "python.analysis.extraPaths": [
+        "./env/lib/python3.13/site-packages",
+        "./env/lib64/python3.13/site-packages"
+    ],
+}

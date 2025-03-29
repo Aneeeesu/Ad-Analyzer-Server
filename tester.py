@@ -5,9 +5,7 @@ from threading import Thread
 import time
 import asyncio
 import select
-import cv2
 from PIL import Image
-from ultralytics import YOLO 
 from appController import LogMonitor
 from appController import *
 from imageAnalyzer import analyzeImage
@@ -17,8 +15,10 @@ from transformers import AutoModel
 
 from transformers import pipeline
 from PIL import Image
-import requests
 from imageAnalyzer import analyzeImage
+import os
+import yaml
+import sys
     
 
 contentType = "AA"
@@ -43,7 +43,8 @@ async def main():
     model="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",  # Replace with your chosen model
     device=0
     )
-    context = ActionContext(image_classifier,description.labels)
+    os.makedirs(".cache", exist_ok=True)
+    context = ActionContext(image_classifier,description.labels,description.events)
     
 
     semaphore = asyncio.Semaphore(1)
@@ -53,23 +54,9 @@ async def main():
     for action in description.tasks:
         await action.execute(monitor,context)
     
-    # # await broadcastAdb("TikTok.OpenDMs","--es username aneeeesu",monitor)
-    # # print("DMs opened")
-    # # await broadcastAdb("TikTok.SendDM","--es message ily",monitor)
-    # print("Message sent")
-    # await broadcastAdb("TikTok.NavigateToHome","",monitor)
-    
-    # contentTypeCounter = {}
-    # global contentType
-    # await broadcastAdb("TikTok.SwipeDown","",monitor)
-    # while(True):
-    #     await semaphore.acquire()
-    #     if contentType not in contentTypeCounter:
-    #         contentTypeCounter[contentType] = 0
-    #     takeScreenshot(f"{contentType}-{str(contentTypeCounter[contentType])}")
-    #     analyzeImage(image_classifier,f"{contentType}-{str(contentTypeCounter[contentType])}")
-    #     contentTypeCounter[contentType] += 1
-    #     await broadcastAdb("TikTok.SwipeDown","",monitor)
+    print(yaml.dump(context.results))
+
+    monitor.stop()
 
 if __name__ == "__main__":
    asyncio.run(main())
