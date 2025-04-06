@@ -72,7 +72,7 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
     results = {}
 
     if contentType == "Ad":
-        description = f"{" ".join(result.split()[7:])}"
+        description = " ".join(result.split()[7:])
         print(description)
         results = ta.analyzeText(deviceName,context.text_classifier,description,context.adLabels)
     else:

@@ -2,6 +2,7 @@ import subprocess
 import os
 import uuid
 from threading import Thread
+from threading import Semaphore
 import time
 import asyncio
 import select
@@ -22,12 +23,22 @@ import yaml
 import sys
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
+timestamp = time.time()
+# semaphore
+fileSemaphore = Semaphore()
+
 async def executeDeviceTasksAndEvents(device,description,monitor,context):
     for action in description.getDeviceTasks(device):
         action.device = device
         await action.execute(monitor,context)
+        fileSemaphore.acquire()
+        with open(f"./results/results-{timestamp}.yaml", "w") as f:
+            yaml.dump(context.results, f)
+        fileSemaphore.release()
+        
 
 async def main():
+    
     description = load_description("test-description.yaml")
     image_classifier = pipeline(
     task="zero-shot-image-classification",
@@ -39,6 +50,7 @@ async def main():
                       model="joeddav/xlm-roberta-large-xnli")
 
     os.makedirs(".cache", exist_ok=True)
+    os.makedirs("results", exist_ok=True)
     context = ActionContext(image_classifier,text_classifier,description.labels,description.adLabels,description.events)
     
 
@@ -69,7 +81,7 @@ async def main():
             
     
     print(yaml.dump(context.results))
-    with open(f"./results/results-{time.time()}.yaml", "w") as f:
+    with open(f"./results/results-{timestamp}.yaml", "w") as f:
         yaml.dump(context.results, f)
 
 
