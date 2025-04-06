@@ -11,6 +11,7 @@ from appController import *
 from imageAnalyzer import analyzeImage
 from testDescriptionParser import load_description
 from testDescriptionParser import ActionContext
+from testDescriptionParser import Description
 from transformers import AutoModel
 
 from transformers import pipeline
@@ -19,22 +20,12 @@ from imageAnalyzer import analyzeImage
 import os
 import yaml
 import sys
-    
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-contentType = "AA"
-
-def processEvent(line,semaphoreToRelease):
-    tokens = line.split() # type: list[str]
-    if(len(tokens) <= 6):
-        return
-    print(line)
-    print(tokens[6])
-
-    if(tokens[6].startswith("Content=")):
-        global contentType
-        contentType = tokens[6].split("=")[1]
-        print(contentType)
-        semaphoreToRelease.release()
+async def executeDeviceTasksAndEvents(device,description,monitor,context):
+    for action in description.getDeviceTasks(device):
+        action.device = device
+        await action.execute(monitor,context)
 
 async def main():
     description = load_description("test-description.yaml")
@@ -43,20 +34,44 @@ async def main():
     model="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",  # Replace with your chosen model
     device=0
     )
+
+    text_classifier = pipeline("zero-shot-classification",
+                      model="joeddav/xlm-roberta-large-xnli")
+
     os.makedirs(".cache", exist_ok=True)
-    context = ActionContext(image_classifier,description.labels,description.events)
+    context = ActionContext(image_classifier,text_classifier,description.labels,description.adLabels,description.events)
     
 
-    semaphore = asyncio.Semaphore(1)
-    monitor = LogMonitor("com.tenshite.inputmacros","AppControllerEvent", lambda x: processEvent(x,semaphore))
-    monitor.start()
+
+
     
-    for action in description.tasks:
-        await action.execute(monitor,context)
+    if description.devices is None:
+        monitor = LogMonitor("com.tenshite.inputmacros","AppControllerEvent")
+        monitor.start()
+        for action in description.tasks:
+            await action.execute(monitor,context)
+        monitor.stop()
+    else:
+        tasks = []
+        for device in description.devices:
+            monitor = LogMonitor("com.tenshite.inputmacros","AppControllerEvent",device)
+            monitor.start()
+            #create task for each device
+            # await executeDeviceTasksAndEvents(device,description,monitor,context)
+            task = asyncio.create_task(executeDeviceTasksAndEvents(device,description,monitor,context))
+            task.add_done_callback(lambda t: monitor.stop())
+            
+            tasks.append(task)
+        #wait for all tasks to finish
+        await asyncio.gather(*tasks)
+    #wait for semaphore to be released
+
+            
     
     print(yaml.dump(context.results))
+    with open(f"./results/results-{time.time()}.yaml", "w") as f:
+        yaml.dump(context.results, f)
 
-    monitor.stop()
 
 if __name__ == "__main__":
    asyncio.run(main())

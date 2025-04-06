@@ -9,6 +9,7 @@ class Event:
     triggerConditions : Callable[[ActionContext], bool]
     action : Callable[[...], None]
     action_args : list
+    device : str | None
     def __init__(self):
         self.triggerConditions = None
         self.action = None

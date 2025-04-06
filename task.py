@@ -9,6 +9,7 @@ class Task:
     action : Callable[[...], None]
     action_args : list
     mutex : Semaphore
+    device : str | None
     
     # arg is TestFeedback and returns bool
     conditionsToStop : Callable[[ActionContext], bool] | None
@@ -17,6 +18,7 @@ class Task:
         self.conditionsToStop = None
         self.action = None
         self.action_args = []
+        self.device = None
     
     async def __exec__(self):
         self.mutex.acquire()
@@ -27,12 +29,12 @@ class Task:
         self.action_args.append(monitor)
         self.action_args.append(context)
         if self.conditionsToStop is None:
-            await context.execute_events(monitor,context)
+            await context.execute_events(self.device,monitor,context)
             await self.__exec__()
             return
         
         while not self.conditionsToStop(context):
-            await context.execute_events(monitor,context)
+            await context.execute_events(self.device,monitor,context)
             await self.__exec__()
             
     def pause(self):

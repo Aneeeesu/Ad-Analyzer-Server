@@ -5,19 +5,20 @@ from transformers import pipeline
 import torch
 
 
-def analyzeImage(deviceName,image_classifier,imageName,labels):
+def analyzeText(deviceName,text_classifier,text,labels):
     deviceName = "/" + deviceName if deviceName is not None else ""
     
-    im1 = Image.open(f"./.cache{deviceName}/{imageName}.png")
     #results = model.predict(source=im1, save=True)  # type YOLONetResults
     
-    outputs = image_classifier(im1, candidate_labels=labels)
-    outputs = [{"score": round(output["score"], 4), "label": output["label"] } for output in outputs]
-    print(image_classifier.device)
+    outputs = text_classifier(text, labels)
+    reformated_outputs = []
+
+    for i in range(len(outputs['labels'])):
+        reformated_outputs.append({"score": outputs['scores'][i], "label": outputs['labels'][i]})
+
+    print(reformated_outputs)
     
-    print(outputs)
-    
-    return outputs
+    return reformated_outputs
     
     # for i in range(len(results)):
     #     print(results[i].names)
