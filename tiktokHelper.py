@@ -71,8 +71,11 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
     ac.takeScreenshot(deviceName,filename)
     results = {}
 
+    #timeout
+
+    
+    description = " ".join(result.split()[7:])
     if contentType == "Ad":
-        description = " ".join(result.split()[7:])
         print(description)
         results = ta.analyzeText(deviceName,context.text_classifier,description,context.adLabels)
     else:
@@ -86,7 +89,7 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
         if result['score'] > 0.5 and random.random() > 0.5:
             sleep(abs(random.gauss(10,2)+5))
         
-    context.add_result(contentType,results,timeStamp)
+    context.add_result(contentType,results,timeStamp,description)
 
 
 async def sendMessage(username:str,message:str,monitor : ac.LogMonitor,context : ActionContext):

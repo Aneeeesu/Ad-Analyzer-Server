@@ -1,0 +1,527 @@
+Labels:
+  - girlfriend
+  - counter-strike
+  - Anime
+  - else
+  - Cats
+  - Dogs
+
+AdLabels:
+  - reklama na vzdělávání
+  - reklama na aplikace
+  - reklama na oblečení a doplňky
+  - reklama na zprávy a zábavu
+  - reklama na obchodní služby
+  - reklama na videohry
+  - reklama na občanské služby
+  - reklama na potraviny a nápoje
+  - reklama na sport a venkovní aktivity
+  - reklama na vozidla a dopravu
+  - reklama na elektronický obchod
+  - reklama na děti a mateřství
+  - reklama na finanční služby
+  - reklama na kosmetiku a osobní péči
+  - reklama na techniku a elektroniku
+  - reklama na spotřebiče
+  - reklama na cestování
+  - reklama na výrobky pro domácnost
+
+  
+Tasks:
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 10
+
+
+
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 1
+#     Application: Misc
+
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 1
+
+  
+#   - Action : WakeUp
+#     Device : RZCWB08CLEE
+#     Application: System
+#     #Action_args:
+
+
+# #Device 2
+# #message 1
+# #Babeeee
+# #message 2
+# #Jaký je tvůj názor na chipsy?
+# #message 3
+# #Jsi zastánce brambůrků a nebo jsi hater?
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Hydra CZ"
+#       - "Jaký je tvůj názor na chipsy?"
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Hydra CZ"
+#       - "Jsi zastánce brambůrků a nebo jsi hater?"
+
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 2
+#     Application: Misc
+
+# #Device 1
+# #message 1
+# #Idk tyji
+# #message 2
+# #Jako
+# #message 3
+# #Ne ze bych je nefeelovala
+# #message 4
+# #Ale málo kdy si je koupím
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 2
+    
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Idk tyji"
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Jako"
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Ne ze bych je nefeelovala"
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Ale málo kdy si je koupím"
+
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 3
+#     Application: Misc
+
+# #Device 2
+# #message 1
+# #humm
+# #message 2
+# #když už by jsi je koupila tak nějaké preference?
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 3
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Hydra CZ"
+#       - "humm"
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Hydra CZ"
+#       - "když už by jsi je koupila tak nějaké preference?"
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 4
+#     Application: Misc
+
+# #Device 1
+# #message 1
+# #Záleží hodně jaký
+# #message 2
+# #:Ddd nic mi nekupuj
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 4
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Záleží hodně jaký"
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - ":Ddd nic mi nekupuj"
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 5
+#     Application: Misc
+
+
+# #Device 2
+# #message 1
+# #nn
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 5
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Hydra CZ"
+#       - "nn"
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 6
+#     Application: Misc
+
+# #device 1
+# #message 1
+# #si sweet
+# #message 2
+# #Ale to je dobrý
+# #message 3
+# #Nějaký co mají texturu
+
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 6
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "si sweet"
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Ale to je dobrý"
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Aneeeesu"
+#       - "Nějaký co mají texturu"
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 7
+#     Application: Misc
+# #Device 2
+# #message 1
+# #fiuu třeba ty s cibulí a smetanou nebo jaký to jsou?
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 7
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "fiuu třeba ty s cibulí a smetanou nebo jaký to jsou?"
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 8
+#     Application: Misc
+
+# #Device 1
+# #message 1
+# #Jakýkoliv co mají vroubky
+# #message 2
+# #ty jsou actually taky banger
+
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 8
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Jakýkoliv co mají vroubky"
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "ty jsou actually taky banger"
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 9
+#     Application: Misc
+
+# #Device 2
+# #message 1
+# #real
+# #message 2
+# #mega bych je dal ngl
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 9
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "real"
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "mega bych je dal ngl"
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 10
+#     Application: Misc
+
+# #Device 1
+# #message 1
+# #Hahh
+# #message 2
+# #Nemáš v úterý čas u tebe v byte?
+
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 10
+
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : 8ad45a96
+#     Action_args:
+#       - "Nemáš v úterý čas u tebe v byte?"
+#   - Action: MarkEvent
+#     Device : 8ad45a96
+#     Action_args:
+#       - 11
+#     Application: Misc
+
+
+# #Device 2
+# #message 1
+# #mám asi
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 11
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "mám asi"
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 12
+#     Application: Misc
+
+# #Device 2
+# #message 1
+# #Můžeme koupit jídlo
+
+#   - Action: Sleep
+#     Device : RZCWB08CLEE
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 12
+#   - Action: SendMessage
+#     Application: TikTok
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - "Můžeme koupit jídlo"
+#   - Action: MarkEvent
+#     Device : RZCWB08CLEE
+#     Action_args:
+#       - 13
+#     Application: Misc
+
+# #Device 1
+#   - Action: Sleep
+#     Device : 8ad45a96
+#     Application: Misc
+#     #Action_args: 
+#     Conditions:
+#       - Type: MarkEvent
+#         Id: 13
+
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 600
+
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 1200
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 1800
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 2400
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 3000
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 3600
+
+Events:
+
+

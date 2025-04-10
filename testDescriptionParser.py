@@ -14,7 +14,7 @@ from ActionContext import ActionContext
 from task import Task
 from event import Event
 import novinkyCZHelper as novinkyCZ
-
+import asyncio
 
 async def wakeUp(monitor : ac.LogMonitor, context : ActionContext):
     await ac.broadcastAdb("wakeup","",monitor)
@@ -27,6 +27,9 @@ async def MarkEvent(id : int,monitor : ac.LogMonitor, context : ActionContext):
         context.awaitableEvents[id] = True
 
 
+async def Sleep(monitor : ac.LogMonitor, context : ActionContext):
+    #await for time
+    await asyncio.sleep(5)
 
 def playSound(sound : str,monitor : ac.LogMonitor,context : ActionContext):
     print(f"Playing sound {sound}")
@@ -41,7 +44,7 @@ actionMap = {
         "SendMessage": (tiktok.sendMessage, [str,str]),
         "NavigateToHome": (tiktok.goToHome, []),
         "Search": (tiktok.Search,[str]),
-        "Doomscroll": (tiktok.doomscroll, [str]),
+        "Doomscroll": (tiktok.doomscroll, [str | None]),
     },
 
     'NovinkyCZ': {
@@ -54,7 +57,8 @@ actionMap = {
 
     'Misc':{
         "MarkEvent":(MarkEvent,[int]),
-        "playSound": (playSound, [str])
+        "PlaySound": (playSound, [str]),
+        "Sleep": (Sleep,[])
     }
 }
 

@@ -28,30 +28,15 @@ AdLabels:
 
   
 Tasks:
-  # - Action: Search
-  #   Application: TikTok
-  #   Action_args:
-  #     - Cats
-  #   #Action_args: 
-  #   Conditions:
-  #     - Type: Timeout
-  #       Timeout: 300
-
-
-  # - Action : WakeUp
-  #   Device : 8ad45a96
-  #   Application: System
-  #   #Action_args: 
-
   - Action: Doomscroll
     Application: TikTok
     Device : 8ad45a96
     Action_args:
-      - Anime
+      - Cats
     #Action_args: 
     Conditions:
       - Type: Timeout
-        Timeout: 500
+        Timeout: 600
 
 
   - Action: Doomscroll
@@ -62,79 +47,228 @@ Tasks:
     #Action_args: 
     Conditions:
       - Type: Timeout
-        Timeout: 1000
+        Timeout: 1200
 
   - Action: Doomscroll
     Application: TikTok
     Device : 8ad45a96
     Action_args:
-      - Anime
+      - Cats
     #Action_args: 
     Conditions:
       - Type: Timeout
-        Timeout: 2000
-
+        Timeout: 1800
 
   - Action: Doomscroll
     Application: TikTok
     Device : 8ad45a96
     Action_args:
-      - Anime
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 2400
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 3000
+
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
     #Action_args: 
     Conditions:
       - Type: Timeout
         Timeout: 3600
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 4200
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 4800
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 5400
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 6000
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 6600
 
-  # - Action: Doomscroll
-  #   Application: TikTok
-  #   Device : RZCWB08CLEE
-  #   Action_args:
-  #     - anime
-  #   #Action_args: 
-  #   Conditions:
-  #     - Type: Timeout
-  #       Timeout: 3600
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 7200
 
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 7800
 
-  # - Action: MarkEvent
-  #   Device : RZCWB08CLEE
-  #   Action_args:
-  #     - 1
-  #   Application: Misc
+  - Action: Doomscroll
 
-  # - Action : WakeUp
-  #   Application: System
-  #   #Action_args: 
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 8400
+    
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 9000
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 9600
+    
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 10200
+  
+  - Action: Doomscroll
 
-  # - Action: Open
-  #   Application: NovinkyCZ
-  #   Action_args: 
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 10800
 
-  # - Action : GoThroughAds
-  #   Application: NovinkyCZ
-  #   #Action_args:
-  #   Device : emulator-5554
-  #   Conditions:
-  #     - Type: Timeout
-  #       Timeout: 30
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 11400
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 12000
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 12600
 
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 13200
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 13800
+  
+  - Action: Doomscroll
+    Application: TikTok
+    Device : 8ad45a96
+    Action_args:
+      - Cats
+    #Action_args: 
+    Conditions:
+      - Type: Timeout
+        Timeout: 14400
+  
 Events:
-#   - Action: SendMessage
-#     Action_args:
-#       - "aneeeesu"
-#       - "Still tiktok doesn't allow us to text?"
-#     Application: TikTok
-#     TriggerConditions:
-#       - Type: Timeout
-#         Timeout: 120
-
-  # - Action: MarkEvent
-  #   Device : 8ad45a96
-  #   Action_args:
-  #     - 1
-  #   Application: Misc
-  #   TriggerConditions:
-  #     - Type: Timeout
-  #       Timeout: 60
 
 

@@ -10,7 +10,7 @@ class ActionContext:
     average_label_probability_in_last_hour : dict[str, float]
     labels : list[str]
     image_analyzer : pipeline
-    result = namedtuple('result', ['type','timestamp','values'])
+    result = namedtuple('result', ['type','timestamp','values','description'])
     awaitableEvents : dict[int,bool] = {}
     eventQueue : list
 
@@ -29,8 +29,8 @@ class ActionContext:
         self.events = events 
         self.results = []
     
-    def add_result(self,type : str, new_result : list[tuple[str, float]],timeStamp : float):
-        self.results.append(self.result(type,timeStamp,new_result))
+    def add_result(self,type : str, new_result : list[tuple[str, float]],timeStamp : float,description : str = ""):
+        self.results.append(self.result(type,timeStamp,new_result,description))
 
     async def execute_events(self,device,monitor,context):
         #check if any events are triggered

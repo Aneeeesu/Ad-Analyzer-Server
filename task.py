@@ -30,12 +30,20 @@ class Task:
         self.action_args.append(context)
         if self.conditionsToStop is None:
             await context.execute_events(self.device,monitor,context)
-            await self.__exec__()
+            try:
+                result = await asyncio.wait_for(self.__exec__(), timeout=300)  # Set timeout to 5 seconds
+                print(result)
+            except asyncio.TimeoutError:
+                print("Task timed out and was skipped")
             return
         
         while not self.conditionsToStop(context):
             await context.execute_events(self.device,monitor,context)
-            await self.__exec__()
+            try:
+                result = await asyncio.wait_for(self.__exec__(), timeout=300)  # Set timeout to 5 seconds
+                print(result)
+            except asyncio.TimeoutError:
+                print("Task timed out and was skipped")
             
     def pause(self):
         self.mutex.acquire()
