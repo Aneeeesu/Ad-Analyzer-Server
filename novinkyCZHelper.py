@@ -14,8 +14,9 @@ async def go_trough_ads(monitor : LogMonitor, context : ActionContext):
     while result.split()[7] == "true":
         timeStamp = t.time()
         filename = f"Advertisement-{timeStamp}"
-        ac.takeScreenshot(filename)
-        results = ia.analyzeImage(context.image_analyzer,filename,context.labels)
+        deviceName = monitor.deviceSelector.split()[1] if monitor.deviceSelector else ""
+        ac.takeScreenshot(deviceName,filename)
+        results = ia.analyzeImage(deviceName,context.image_analyzer,filename,context.labels)
         context.add_result("advertisment",results,timeStamp)
 
         result = await ac.broadcastAdb("NovinkyCZ.FocusAd","",monitor)

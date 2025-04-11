@@ -50,6 +50,8 @@ async def main():
                       model="joeddav/xlm-roberta-large-xnli")
 
     os.makedirs(".cache", exist_ok=True)
+    for device in description.devices:
+        os.makedirs(f"./.cache/{device}", exist_ok=True)
     os.makedirs("results", exist_ok=True)
     context = ActionContext(image_classifier,text_classifier,description.labels,description.adLabels,description.events)
     
