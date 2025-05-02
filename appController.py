@@ -178,7 +178,7 @@ def takeScreenshot(deviceName:str | None,filename:str):
         stderr=subprocess.PIPE
     )
 
-    deviceName = "/" + deviceName if deviceName is not None else ""
+    deviceName = ("/" + deviceName) if deviceName is not "" else ""
 
     stdout, stderr = process.communicate()
     # Check if there were any errors

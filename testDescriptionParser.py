@@ -10,7 +10,7 @@ from typing import Callable
 from playsound import playsound
 import random
 from time import sleep
-from ActionContext import ActionContext
+from actionContext import ActionContext
 from task import Task
 from event import Event
 import novinkyCZHelper as novinkyCZ
@@ -97,7 +97,6 @@ class Description:
     adLabels : list[str]
     tasks : list[Task]
     events : list[Event]
-    markIds : list[int]
     devices : list[str]
     def __init__(self):
         self.labels = []
@@ -110,6 +109,7 @@ class Description:
             if task.device == device:
                 tasks.append(task)
         return tasks
+    
     def getDeviceEvents(self,device : str):
         events = []
         for event in self.events:
@@ -291,8 +291,11 @@ def load_description(fileName : str):
     parsed_description = Description()
     error_message = ""
     
-    with open(fileName, 'r') as file:
-        description = yaml.safe_load(file)
+    try:
+        with open(fileName, 'r') as file:
+            description = yaml.safe_load(file)
+    except Exception as e:
+        raise Exception(f"Error loading yaml file: {e}")
         
     print(type(description))
     
@@ -359,14 +362,3 @@ def load_description(fileName : str):
     if(error_message != ""):
         raise Exception(error_message)
     return parsed_description
-
-        
-        
-if __name__ == "__main__":
-    description = load_description("test-description.yaml")
-    context = ActionContext()
-    monitor = None
-    
-    
-    for action in description.tasks:
-        action.execute(monitor,context)

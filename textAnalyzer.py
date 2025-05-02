@@ -6,7 +6,7 @@ import torch
 
 
 def analyzeText(deviceName,text_classifier,text,labels):
-    deviceName = "/" + deviceName if deviceName is not None else ""
+    deviceName = "/" + deviceName if deviceName is not "" else ""
     
     #results = model.predict(source=im1, save=True)  # type YOLONetResults
     

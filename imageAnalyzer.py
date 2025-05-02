@@ -6,10 +6,9 @@ import torch
 
 
 def analyzeImage(deviceName,image_classifier,imageName,labels):
-    deviceName = "/" + deviceName if deviceName is not None else ""
+    deviceName = "/" + deviceName if deviceName is not "" else ""
     
     im1 = Image.open(f"./.cache{deviceName}/{imageName}.png")
-    #results = model.predict(source=im1, save=True)  # type YOLONetResults
     
     outputs = image_classifier(im1, candidate_labels=labels)
     outputs = [{"score": round(output["score"], 4), "label": output["label"] } for output in outputs]
