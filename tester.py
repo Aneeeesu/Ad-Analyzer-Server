@@ -22,6 +22,7 @@ from time import sleep
 import os
 import yaml
 import sys
+from time import sleep
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 timestamp = time.time()
@@ -29,19 +30,30 @@ timestamp = time.time()
 fileSemaphore = Semaphore()
 
 async def executeDeviceTasksAndEvents(device,description,monitor,context):
-    for action in description.getDeviceTasks(device):
-        action.device = device
+    if device is None:
+        tasks = description.tasks
+    else:
+        tasks = description.getDeviceTasks(device)
+        
+    for action in tasks:
         await action.execute(monitor,context)
         sleep(1)
         fileSemaphore.acquire()
+        sleep(0.5)
         with open(f"./results/results-{timestamp}.yaml", "w") as f:
             yaml.dump(context.results, f)
         fileSemaphore.release()
         
 
+# take name as arg
 async def main():
+    # check if name is passed as arg
+    if len(sys.argv) > 1:
+        name = sys.argv[1]
+    else:
+        name = "test-description.yaml"
     
-    description = load_description("test-description.yaml")
+    description = load_description(name)
     image_classifier = pipeline(
     task="zero-shot-image-classification",
     model="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",  # Replace with your chosen model
@@ -67,7 +79,7 @@ async def main():
         monitor = LogMonitor("com.tenshite.inputmacros","AppControllerEvent")
         monitor.start()
         for action in description.tasks:
-            await action.execute(monitor,context)
+            await executeDeviceTasksAndEvents(None,description,monitor,context)
         monitor.stop()
     else:
         tasks = []
