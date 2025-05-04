@@ -18,6 +18,7 @@ from transformers import AutoModel
 from transformers import pipeline
 from PIL import Image
 from imageAnalyzer import analyzeImage
+from time import sleep
 import os
 import yaml
 import sys
@@ -31,6 +32,7 @@ async def executeDeviceTasksAndEvents(device,description,monitor,context):
     for action in description.getDeviceTasks(device):
         action.device = device
         await action.execute(monitor,context)
+        sleep(1)
         fileSemaphore.acquire()
         with open(f"./results/results-{timestamp}.yaml", "w") as f:
             yaml.dump(context.results, f)
@@ -50,6 +52,10 @@ async def main():
                       model="joeddav/xlm-roberta-large-xnli")
 
     os.makedirs(".cache", exist_ok=True)
+    
+    for devce in description.devices:
+        os.makedirs(f".cache/{devce}", exist_ok=True)
+    
     os.makedirs("results", exist_ok=True)
     context = ActionContext(image_classifier,text_classifier,description.labels,description.adLabels,description.events)
     

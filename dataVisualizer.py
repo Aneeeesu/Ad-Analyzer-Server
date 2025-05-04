@@ -14,7 +14,7 @@ yaml.SafeLoader.add_constructor(
 
 
 #read the YAML data from a file
-with open('./results/results-1743980610.5823112.yaml', 'r') as file:
+with open('./results/results-1744816598.7336326.yaml', 'r') as file:
     raw_data = yaml.safe_load(file)
 
 
@@ -24,7 +24,7 @@ interval = 300  # 600 seconds = 10 minutes
 grouped_data = defaultdict(lambda: defaultdict(list))  # {rounded_timestamp: {label: [scores]}}
 
 for entry in raw_data:
-    kind, ts, labels = entry
+    kind, ts, labels,description = entry
     if kind != "Ad":
         continue
 

@@ -23,7 +23,6 @@ async def MarkEvent(id : int,monitor : ac.LogMonitor, context : ActionContext):
     if(context.awaitableEvents.get(id) is not None):
         context.awaitableEvents[id] = True
     else: 
-        context.awaitableEvents.append(id)
         context.awaitableEvents[id] = True
 
 
@@ -31,7 +30,7 @@ async def Sleep(monitor : ac.LogMonitor, context : ActionContext):
     #await for time
     await asyncio.sleep(5)
 
-def playSound(sound : str,monitor : ac.LogMonitor,context : ActionContext):
+async def playSound(sound : str,monitor : ac.LogMonitor,context : ActionContext):
     print(f"Playing sound {sound}")
     playsound(f"./sounds/{sound}")
 

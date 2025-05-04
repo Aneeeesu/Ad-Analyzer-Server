@@ -11,11 +11,14 @@ import imageAnalyzer as ia
 
 async def go_trough_ads(monitor : LogMonitor, context : ActionContext):
     result = await ac.broadcastAdb("NovinkyCZ.FocusAd","",monitor)
+    print(result.split()[7] == "true")
     while result.split()[7] == "true":
         timeStamp = t.time()
+        print("time")
         filename = f"Advertisement-{timeStamp}"
-        ac.takeScreenshot(filename)
-        results = ia.analyzeImage(context.image_analyzer,filename,context.labels)
+        ac.takeScreenshot(monitor.deviceSelector.split()[1],filename)
+        print("screen")
+        results = ia.analyzeImage(monitor.deviceSelector.split()[1],context.image_analyzer,filename,context.labels)
         context.add_result("advertisment",results,timeStamp)
 
         result = await ac.broadcastAdb("NovinkyCZ.FocusAd","",monitor)

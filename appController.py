@@ -171,6 +171,7 @@ async def broadcastAdb(command,broadcastArgs,logMonitor : LogMonitor):
     return future.result()
 
 def takeScreenshot(deviceName:str | None,filename:str):
+    print(deviceName)
     args = ["adb", "exec-out", "screencap", "-p"] if deviceName is None else ["adb", "-s", deviceName, "exec-out", "screencap", "-p"]
     process = subprocess.Popen(
         args,
