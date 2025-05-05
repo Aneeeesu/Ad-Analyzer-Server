@@ -6,6 +6,16 @@ import torch
 
 
 def analyzeImage(deviceName,image_classifier,imageName,labels):
+    """
+    Analyze an image using a zero-shot image classification model.
+    Args:
+        deviceName (str): The name of the device.
+        image_classifier (pipeline): The zero-shot image classification pipeline.
+        imageName (str): The name of the image file to analyze.
+        labels (list): A list of candidate labels for classification.
+    Returns:
+        list: A list of dictionaries containing the classification results.
+    """
     if deviceName == "":
         raise Exception("Device name is empty")
     
@@ -18,8 +28,3 @@ def analyzeImage(deviceName,image_classifier,imageName,labels):
     print(outputs)
     
     return outputs
-    
-    # for i in range(len(results)):
-    #     print(results[i].names)
-    #     print(results[i].tojson())
-    # print(time.time() - timeToAnalyze)

@@ -11,8 +11,11 @@ import datetime
 import os
 import numpy as np
 
+# Simple hand data filter application to bit improve the quality of the data
+# does need to have categories specified inside the code
 
-categories = ["Advertisement",]
+
+categories = ["Advertisement"]
 
 # Dropdown
 # options = ["Náhodné tiktok účty",
@@ -63,22 +66,6 @@ options = ["Stavba",
 "Zvířata",
 "Industriální výrobky",
 "Řešení pro firmy"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Handle the custom YAML tag
 yaml.SafeLoader.add_constructor(

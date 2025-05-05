@@ -59,16 +59,16 @@ for rounded_ts in sorted(grouped_data.keys()):
         else:
             averaged_scores[label].append(0)
 
-# Připrav data pro heatmapu
+# Data preparation for heatmap
 heatmap_data = []
-labels_list = list(labels)  # pro konzistentní pořadí
+#for more consistency
+labels_list = list(labels) 
 
 for label in labels_list:
     heatmap_data.append(averaged_scores[label])
 
-# heatmap_data je teď [label1_values, label2_values, ...]
-# potřebujeme transponovat: řádky = čas, sloupce = kategorie
-heatmap_array = np.array(heatmap_data).T  # shape: (časové okno, kategorie)
+
+heatmap_array = np.array(heatmap_data).T 
 
 # Vykresli heatmapu
 plt.figure(figsize=(12, 6))
@@ -108,10 +108,10 @@ def make_autopct(values):
         return '{v:d}'.format(v=val)
     return my_autopct
 
-# Vytvoření součtů pro každou kategorii
+# Adding sums to the labels
 total_counts = {label: sum(averaged_scores[label]) for label in labels}
 
-# Příprava dat
+# Data preparation for bar graphs
 labels_list = list(total_counts.keys())
 sizes = list(total_counts.values())
 
@@ -124,7 +124,7 @@ plt.yticks(range(len(sorted_labels)), sorted_labels)
 plt.xlabel("Počet výskytů")
 plt.title("Podíl kategorií reklam během experimentu")
 
-# Přidat hodnoty na konec každého pruhu
+# Add values to end of bars
 for i, v in enumerate(sorted_sizes):
     plt.text(v + 1, i, str(v), va='center')
 

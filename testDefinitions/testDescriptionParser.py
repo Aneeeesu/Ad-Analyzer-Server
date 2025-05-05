@@ -22,7 +22,7 @@ from testDefinitions.description import Description
 import traceback
 
 
-
+# map of all possible actions
 actionMap = {
     'TikTok': tiktok.getActionMap(),
     'NovinkyCZ': novinkyCZ.getActionMap(),
@@ -30,17 +30,28 @@ actionMap = {
     'Misc': miscActions.getActionMap(),
 }
 
-conditionMap = {
-    'MarkEvent': (lambda x: checkMarkEvent(x), [("Id",int)]),
-    'Timeout': (lambda x: timeout_condition(x),[("Timeout",int)]),
-    'Percentage': (lambda x: percentage_condition(x),[("Percentage",float),("Label",str),("Timeout",float)]),
-}
 
+
+
+
+
+# Conditions
 def percentage_condition(percentage : float,label :str, timeout : float, context : ActionContext):
     """
     This function was intended for usecase that never was actually used and may not work as expected.
+
+    In reality the time that this would even need to be used is way longer than any realistic usecase.
     
     This condition checks if the average of the results is greater than the percentage.
+
+    It is also fairly slow and not very efficient.
+    Args:
+        percentage (float): percentage to check
+        label (str): label to check
+        timeout (float): timeout in seconds
+        context (ActionContext): context of the action
+    Returns:
+        bool: True if the average is greater than the percentage, False otherwise
     """
     warnings.warn(
         "Percentage condition is deprecated and may not work as expected. ",
@@ -55,6 +66,14 @@ def percentage_condition(percentage : float,label :str, timeout : float, context
     return average > percentage
 
 def checkMarkEvent(id : int, context : ActionContext):
+    """
+    This function checks if the event with the given id has been marked.
+    Args:
+        id (int): id of the event
+        context (ActionContext): context of the action
+    Returns:
+        bool: True if the event has been marked, False otherwise
+    """
     if(context.awaitableEvents.get(id) is not None):
         return context.awaitableEvents[id]
     else:
@@ -63,14 +82,35 @@ def checkMarkEvent(id : int, context : ActionContext):
     
 
 def timeout_condition(timeout : int, context : ActionContext):
+    """
+    This function checks if the timeout has been reached.
+    Args:
+        timeout (int): timeout in seconds
+        context (ActionContext): context of the action
+    Returns:
+        bool: True if the timeout has been reached, False otherwise
+    """
     return t.time() - context.start_timestamp > timeout
-    
 
-async def sendDM(username : str, message : str, monitor : ac.LogMonitor,context : ActionContext):
-    tiktok.openDM(username,monitor)
-    tiktok.sendDM(message,monitor)
+# map of all possible conditions
+conditionMap = {
+    'MarkEvent': (lambda x: checkMarkEvent(x), [("Id",int)]),
+    'Timeout': (lambda x: timeout_condition(x),[("Timeout",int)]),
+    'Percentage': (lambda x: percentage_condition(x),[("Percentage",float),("Label",str),("Timeout",float)]),
+}
+
 
 def find_action(application: str, action: str):
+    """
+    Find the action in the action map.
+    Args:
+        application (str): The application name.
+        action (str): The action name.
+    Raises:
+        Exception: If the application or action is not found.
+    Returns:
+        tuple: The action function and its supported arguments.
+    """
     if actionMap.get(application) is None:
         raise Exception("Application not found")
     if actionMap.get(application).get(action) is None:
@@ -80,27 +120,45 @@ def find_action(application: str, action: str):
 
 
 def parse_condition(conditions: list[dict[str, any]]):
+    """
+    Parse conditions from description
+    This function checks if the description contains a list of conditions and returns it.
+    Args:
+        conditions (list[dict[str, any]]): parsed conditions from yaml file
+    Raises:
+        Exception: Condition must contain type
+        Exception: Condition type not found
+        Exception: Condition argument must be of type
+        Exception: Child conditions must be list
+    Returns:
+        _type_: Callable[[ActionContext], bool]: function that takes ActionContext and returns bool
+    """
     possible_conditions = []
 
     for condition in conditions:
+        # check if condition type is string
         if not isinstance(condition.get("Type"),str):
             raise Exception("Condition must contain type")
         
         condition_type = condition["Type"]
 
+        # check if condition type is in conditionMap
         condition_mapped = conditionMap.get(condition_type)
         if condition_mapped is None:
             raise Exception(f"Condition {condition_type} not found")
         
+        # get condition function and arguments
         condition_func = condition_mapped[0]
         condition_args = condition_mapped[1]
 
+        # check if condition has all the args needed
         for arg in condition_args:
-            print(condition.get(arg[0]))
             if not isinstance(condition.get(arg[0]), arg[1]):
                 raise Exception(f"Condition {condition_type} argument {arg[0]} must be {arg[1]}")
+        #check if condition has child conditions 
         if condition.get("ChildConditions") is None:
             possible_conditions.append(lambda x : condition_func(x))
+        # check if condition has child conditions and if they are in the right format
         elif isinstance(condition.get("ChildConditions"),list[dict[str, any]]):
             child_conditions = parse_condition(condition["ChildConditions"])
             possible_conditions.append(lambda x : condition_func(x) and child_conditions(x))
@@ -111,19 +169,33 @@ def parse_condition(conditions: list[dict[str, any]]):
 
 
 def parse_task(task_description : dict):
+    """
+    Parses task from description
+    task format:
+        Action: action name
+        Application: application name
+        Action_args: list of arguments for action
+        Device: device name
+        Conditions: list of conditions
+    Args:
+        task_description (dict): parsed task from yaml file
+    """
     task = Task()
     
+    # checks if action and application are strings
     if not isinstance(task_description.get("Action"), str):
         raise Exception("Task action name must be string")
     elif not isinstance(task_description.get("Application"), str):
         raise Exception("Task application must be string")
-    else:
-        action_name = task_description["Action"]
-        application =  task_description["Application"]
-        action, supported_args = find_action(application,action_name)
-        task.action = action
-        task.device = task_description.get("Device")
+
+    # checks if action and application are in actionMap
+    action_name = task_description["Action"]
+    application =  task_description["Application"]
+    action, supported_args = find_action(application,action_name)
+    task.action = action
+    task.device = task_description.get("Device")
     
+    # checks if action_args is list and if it has the right length
     action_args = task_description.get("Action_args")
     if(action_args is None):
         action_args = []
@@ -143,6 +215,7 @@ def parse_task(task_description : dict):
             
         task.action_args = action_args
     
+    # checks if conditions are list and if they are in the right format
     if task_description.get("Conditions") is None:
         task.conditionsToStop = None
     elif not isinstance(task_description.get("Conditions"),list):
@@ -288,17 +361,18 @@ def load_description(fileName : str):
     parsed_description = Description()
     error_message = ""
     
+    # check if file exists
     try:
         with open(fileName, 'r') as file:
             description = yaml.safe_load(file)
     except Exception as e:
         raise Exception(f"Error loading yaml file: {e}")
-        
-    print(type(description))
-    
+
+    # check if description is dictionary    
     if not isinstance(description,dict):
         raise Exception("yaml must be dictionary")
     
+    # check if description contains all labels
     try:
         parsed_description.labels = parse_labels(description)
         parsed_description.adLabels = parse_ad_labels(description)
@@ -307,9 +381,11 @@ def load_description(fileName : str):
         traceback.print_exc()
         
     
+    # check if description contains tasks
     if not isinstance(description.get("Tasks"), list):
         error_message += "Description must contain list of Tasks\n"
     else:
+        # parses all tasks
         for task in description["Tasks"]:
             try:
                 parsed_description.tasks.append(parse_task(task))
@@ -318,7 +394,7 @@ def load_description(fileName : str):
                 error_message += str(e)
 
 
-    # check if there is any device that all tasks have some device specified
+    # check if all tasks have some device specified
     if parsed_description.tasks is not None:
         all_tasks_have_device = True
         devices = []
@@ -343,6 +419,7 @@ def load_description(fileName : str):
     else:
         error_message += "Description must contain list of Tasks\n"
 
+    # check if description contains events
     if description.get("Events") is None:
         parsed_description.events = []
     elif not isinstance(description.get("Events"), list):
@@ -354,6 +431,8 @@ def load_description(fileName : str):
             except Exception as e:
                 traceback.print_exc()
                 error_message += str(e)
+
+    # check for errors
     if(error_message != ""):
         raise Exception(error_message)
     return parsed_description
