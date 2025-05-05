@@ -170,7 +170,7 @@ async def broadcastAdb(command,broadcastArgs,logMonitor : LogMonitor):
     await future
     return future.result()
 
-def takeScreenshot(deviceName:str | None,filename:str):
+def takeScreenshot(deviceName:str,filename:str):
     print(deviceName)
     args = ["adb", "exec-out", "screencap", "-p"] if deviceName is None else ["adb", "-s", deviceName, "exec-out", "screencap", "-p"]
     process = subprocess.Popen(
@@ -178,8 +178,8 @@ def takeScreenshot(deviceName:str | None,filename:str):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
-
-    deviceName = ("/" + deviceName) if deviceName is not "" else ""
+    if deviceName == "":
+        raise Exception("Device name is empty")  
 
     stdout, stderr = process.communicate()
     # Check if there were any errors

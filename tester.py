@@ -10,9 +10,9 @@ from PIL import Image
 from appController import LogMonitor
 from appController import *
 from imageAnalyzer import analyzeImage
-from testDescriptionParser import load_description
-from testDescriptionParser import ActionContext
-from testDescriptionParser import Description
+from testDefinitions.testDescriptionParser import load_description
+from testDefinitions.testDescriptionParser import ActionContext
+from testDefinitions.testDescriptionParser import Description
 from transformers import AutoModel
 
 from transformers import pipeline
@@ -29,6 +29,7 @@ timestamp = time.time()
 # semaphore
 fileSemaphore = Semaphore()
 
+#
 async def executeDeviceTasksAndEvents(device,description,monitor,context):
     if device is None:
         tasks = description.tasks
@@ -65,8 +66,8 @@ async def main():
 
     os.makedirs(".cache", exist_ok=True)
     
-    for devce in description.devices:
-        os.makedirs(f".cache/{devce}", exist_ok=True)
+    for deívce in description.devices:
+        os.makedirs(f".cache/{device}", exist_ok=True)
     
     os.makedirs("results", exist_ok=True)
     context = ActionContext(image_classifier,text_classifier,description.labels,description.adLabels,description.events)

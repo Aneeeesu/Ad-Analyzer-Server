@@ -179,7 +179,7 @@ def save_image_results():
         "measurementIndex":imagesToAnalyze[current_image]["measurementIndex"]
         }
     yaml.dump(results, open(results_path, "w"))
-    print(f"Saved results for {imagesToAnalyze[current_image]["name"]} with option {dropdown_var.get()}")
+    print(f"Saved results for {imagesToAnalyze[current_image]['name']} with option {dropdown_var.get()}")
 
 def moveToNextImage():
     global current_image

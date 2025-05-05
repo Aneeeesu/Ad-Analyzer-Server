@@ -9,9 +9,9 @@ from PIL import Image
 from appController import LogMonitor
 from appController import *
 from imageAnalyzer import analyzeImage
-from testDescriptionParser import load_description
-from testDescriptionParser import ActionContext
-from testDescriptionParser import Description
+from testDefinitions.testDescriptionParser import load_description
+from testDefinitions.testDescriptionParser import ActionContext
+from testDefinitions.testDescriptionParser import Description
 from transformers import AutoModel
 
 from transformers import pipeline

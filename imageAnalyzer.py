@@ -6,7 +6,8 @@ import torch
 
 
 def analyzeImage(deviceName,image_classifier,imageName,labels):
-    deviceName = "/" + deviceName if deviceName is not "" else ""
+    if deviceName == "":
+        raise Exception("Device name is empty")
     
     im1 = Image.open(f"./.cache{deviceName}/{imageName}.png")
     

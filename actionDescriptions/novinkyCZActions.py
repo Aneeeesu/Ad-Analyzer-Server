@@ -5,7 +5,7 @@ from playsound import playsound
 import random
 import time as t
 from time import sleep
-from actionContext import ActionContext
+from testDefinitions.actionContext import ActionContext
 import imageAnalyzer as ia
 
 
@@ -27,3 +27,9 @@ async def go_trough_ads(monitor : LogMonitor, context : ActionContext):
 async def Open(monitor : LogMonitor, context : ActionContext):
     await ac.broadcastAdb("NovinkyCZ.Open","",monitor)
     sleep(10)
+
+def getActionMap():
+    return {
+        "Open": Open,
+        "GoThroughAds": go_trough_ads,
+    }

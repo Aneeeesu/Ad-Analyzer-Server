@@ -5,7 +5,7 @@ from playsound import playsound
 import random
 import time as t
 from time import sleep
-from actionContext import ActionContext
+from testDefinitions.actionContext import ActionContext
 import imageAnalyzer as ia
 import textAnalyzer as ta
 
@@ -95,3 +95,18 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
 async def sendMessage(username:str,message:str,monitor : ac.LogMonitor,context : ActionContext):
     await openDM(username,monitor,context)
     await sendDM(message,monitor,context)
+
+def getActionMap():
+    return {
+        "OpenDM": openDM,
+        "SendDM": sendDM,
+        "GoToHome": goToHome,
+        "SwipeDown": swipeDown,
+        "SwipeUp": swipeUp,
+        "GoToMessages": goToMessages,
+        "GoToProfile": goToProfile,
+        "Like": like,
+        "Search": Search,
+        "Doomscroll": doomscroll,
+        "SendMessage": sendMessage
+    }
