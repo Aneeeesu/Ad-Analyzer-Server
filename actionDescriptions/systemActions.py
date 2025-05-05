@@ -7,5 +7,5 @@ async def wakeUp(monitor : LogMonitor, context : ActionContext):
 
 def getActionMap():
     return {
-        "WakeUp": wakeUp,
+        "WakeUp": (wakeUp,[])
     }

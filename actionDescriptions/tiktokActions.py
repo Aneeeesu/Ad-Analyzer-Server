@@ -98,15 +98,15 @@ async def sendMessage(username:str,message:str,monitor : ac.LogMonitor,context :
 
 def getActionMap():
     return {
-        "OpenDM": openDM,
-        "SendDM": sendDM,
-        "GoToHome": goToHome,
-        "SwipeDown": swipeDown,
-        "SwipeUp": swipeUp,
-        "GoToMessages": goToMessages,
-        "GoToProfile": goToProfile,
-        "Like": like,
-        "Search": Search,
-        "Doomscroll": doomscroll,
-        "SendMessage": sendMessage
+        "OpenDM": (openDM, [str]),
+        "SendDM": (sendDM, [str]),
+        "GoToHome": (goToHome, []),
+        "SwipeDown": (swipeDown,[]),
+        "SwipeUp": (swipeUp, []),
+        "GoToMessages": (goToMessages, []),
+        "GoToProfile": (goToProfile, []),
+        "Like": (like, []),
+        "Search": (Search, [str]),
+        "Doomscroll": (doomscroll, [str]),
+        "SendMessage": (sendMessage, [str,str]),
     }

@@ -20,7 +20,7 @@ async def playSound(sound : str,monitor : LogMonitor,context : ActionContext):
     
 def getActionMap():
     return {
-        "MarkEvent": MarkEvent,
-        "Sleep": Sleep,
-        "PlaySound": playSound
+        "MarkEvent": (MarkEvent,[int]),
+        "Sleep": (Sleep,[]),
+        "PlaySound": (playSound,[str])
     }

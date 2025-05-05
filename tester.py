@@ -66,7 +66,7 @@ async def main():
 
     os.makedirs(".cache", exist_ok=True)
     
-    for deívce in description.devices:
+    for device in description.devices:
         os.makedirs(f".cache/{device}", exist_ok=True)
     
     os.makedirs("results", exist_ok=True)

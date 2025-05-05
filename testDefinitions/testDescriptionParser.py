@@ -19,24 +19,21 @@ import actionDescriptions.novinkyCZActions as novinkyCZ
 import actionDescriptions.systemActions as systemActions
 import warnings
 from testDefinitions.description import Description
+import traceback
 
 
 
 actionMap = {
-    'TikTok': {
-        tiktok.getActionMap()
-    },
+    'TikTok': tiktok.getActionMap(),
+    'NovinkyCZ': novinkyCZ.getActionMap(),
+    'System': systemActions.getActionMap(),
+    'Misc': miscActions.getActionMap(),
+}
 
-    'NovinkyCZ': {
-        tiktok.getActionMap()
-    },
-    'System': {
-        systemActions.getActionMap()
-    },
-
-    'Misc':{
-        miscActions.getActionMap()
-    }
+conditionMap = {
+    'MarkEvent': (lambda x: checkMarkEvent(x), [("Id",int)]),
+    'Timeout': (lambda x: timeout_condition(x),[("Timeout",int)]),
+    'Percentage': (lambda x: percentage_condition(x),[("Percentage",float),("Label",str),("Timeout",float)]),
 }
 
 def percentage_condition(percentage : float,label :str, timeout : float, context : ActionContext):
@@ -68,9 +65,7 @@ def checkMarkEvent(id : int, context : ActionContext):
 def timeout_condition(timeout : int, context : ActionContext):
     return t.time() - context.start_timestamp > timeout
     
-    
 
-    
 async def sendDM(username : str, message : str, monitor : ac.LogMonitor,context : ActionContext):
     tiktok.openDM(username,monitor)
     tiktok.sendDM(message,monitor)
@@ -82,54 +77,36 @@ def find_action(application: str, action: str):
         raise Exception("Action not found")
     return actionMap[application][action]
 
-def is_mark_event_condition(condition : dict[str, any]):
-    if not isinstance(condition.get("Type"),str):
-        raise Exception("Condition must contain type")
-    else:
-        condition_type = condition["Type"]
-        if condition_type == "MarkEvent":
-            if not isinstance(condition.get("Id"), int):
-                raise Exception("MarkEvent condition must contain id")
-            else:
-                return True
-    return False
 
-def is_timeout_condition(condition : dict[str, any]):
-    if not isinstance(condition.get("Type"),str):
-        raise Exception("Condition must contain type")
-    else:
-        condition_type = condition["Type"]
-        if condition_type == "Timeout":
-            if not isinstance(condition.get("Timeout"), int):
-                raise Exception("Timeout condition must contain timeout")
-            else:
-                return True
-    return False
 
 def parse_condition(conditions: list[dict[str, any]]):
     possible_conditions = []
 
     for condition in conditions:
-        if is_timeout_condition(condition):
-            timeout = condition["Timeout"]
-            if condition.get("ChildConditions") is None:
-                possible_conditions.append(lambda x : timeout_condition(timeout, x))
-            elif isinstance(condition.get("ChildConditions"),list[dict[str, any]]):
-                child_conditions = parse_condition(condition["ChildConditions"])
-                possible_conditions.append(lambda x : timeout_condition(timeout, x) and child_conditions(x))
-            else:
-                raise Exception("Child conditions must be list")
-        elif is_mark_event_condition(condition):
-            id = condition["Id"]
-            if condition.get("ChildConditions") is None:
-                possible_conditions.append(lambda x : checkMarkEvent(id,x))
-            elif isinstance(condition.get("ChildConditions"),list[dict[str, any]]):
-                child_conditions = parse_condition(condition["ChildConditions"])
-                possible_conditions.append(lambda x : checkMarkEvent(id,x) and child_conditions(x))
-            else:
-                raise Exception("Child conditions must be list")
-                
-    
+        if not isinstance(condition.get("Type"),str):
+            raise Exception("Condition must contain type")
+        
+        condition_type = condition["Type"]
+
+        condition_mapped = conditionMap.get(condition_type)
+        if condition_mapped is None:
+            raise Exception(f"Condition {condition_type} not found")
+        
+        condition_func = condition_mapped[0]
+        condition_args = condition_mapped[1]
+
+        for arg in condition_args:
+            print(condition.get(arg[0]))
+            if not isinstance(condition.get(arg[0]), arg[1]):
+                raise Exception(f"Condition {condition_type} argument {arg[0]} must be {arg[1]}")
+        if condition.get("ChildConditions") is None:
+            possible_conditions.append(lambda x : condition_func(x))
+        elif isinstance(condition.get("ChildConditions"),list[dict[str, any]]):
+            child_conditions = parse_condition(condition["ChildConditions"])
+            possible_conditions.append(lambda x : condition_func(x) and child_conditions(x))
+        else:
+            raise Exception("Child conditions must be list")
+
     return lambda x : any([condition(x) for condition in possible_conditions])
 
 
@@ -327,6 +304,7 @@ def load_description(fileName : str):
         parsed_description.adLabels = parse_ad_labels(description)
     except Exception as e:
         error_message += str(e)
+        traceback.print_exc()
         
     
     if not isinstance(description.get("Tasks"), list):
@@ -336,6 +314,7 @@ def load_description(fileName : str):
             try:
                 parsed_description.tasks.append(parse_task(task))
             except Exception as e:
+                traceback.print_exc()
                 error_message += str(e)
 
 
@@ -373,6 +352,7 @@ def load_description(fileName : str):
             try:
                 parsed_description.events.append(parse_event(event))
             except Exception as e:
+                traceback.print_exc()
                 error_message += str(e)
     if(error_message != ""):
         raise Exception(error_message)
