@@ -94,9 +94,9 @@ def timeout_condition(timeout : int, context : ActionContext):
 
 # map of all possible conditions
 conditionMap = {
-    'MarkEvent': (lambda x: checkMarkEvent(x), [("Id",int)]),
-    'Timeout': (lambda x: timeout_condition(x),[("Timeout",int)]),
-    'Percentage': (lambda x: percentage_condition(x),[("Percentage",float),("Label",str),("Timeout",float)]),
+    'MarkEvent': (checkMarkEvent, [("Id",int)]),
+    'Timeout': (timeout_condition,[("Timeout",int)]),
+    'Percentage': (percentage_condition,[("Percentage",float),("Label",str),("Timeout",float)]),
 }
 
 
@@ -157,11 +157,14 @@ def parse_condition(conditions: list[dict[str, any]]):
                 raise Exception(f"Condition {condition_type} argument {arg[0]} must be {arg[1]}")
         #check if condition has child conditions 
         if condition.get("ChildConditions") is None:
-            possible_conditions.append(lambda x : condition_func(x))
+            args = []
+            for arg in condition_args:
+                args.append(condition[arg[0]])
+            possible_conditions.append(lambda x : condition_func(*args,x))
         # check if condition has child conditions and if they are in the right format
         elif isinstance(condition.get("ChildConditions"),list[dict[str, any]]):
             child_conditions = parse_condition(condition["ChildConditions"])
-            possible_conditions.append(lambda x : condition_func(x) and child_conditions(x))
+            possible_conditions.append(lambda x : condition_func(*args,x) and child_conditions(x))
         else:
             raise Exception("Child conditions must be list")
 
@@ -205,7 +208,7 @@ def parse_task(task_description : dict):
     action_args_length = len(action_args)
     supported_args_len = len(supported_args)
     if action_args_length < supported_args_len:
-        action_args += [None] * (supported_args_len - action_args_length)  # Efficient
+        action_args += [None] * (supported_args_len - action_args_length)
     elif action_args_length > supported_args_len:
         raise Exception("Number of arguments does not match")
     else:
@@ -241,14 +244,12 @@ def parse_labels(description : dict) -> list[str]:
     Returns:
         _type_: list[str]: list of labels
     """
-    if description.get("Labels") is None:
-        raise Exception("Description must contain list of labels")
+    if description.get("Labels") is None or description.get("Labels") == []:
+        return []
     elif not isinstance(description.get("Labels"),list):
         raise Exception("Labels need to be list")
     else:
-        labels = description["Labels"]
-    
-    return labels
+        return description["Labels"]
 
 def parse_ad_labels(description : dict):
     """

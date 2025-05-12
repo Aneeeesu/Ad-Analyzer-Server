@@ -100,7 +100,14 @@ Each condition is a function with defined expected argument types.
 ```bash
 # Prepare the environment
 # I recommend using a virtual environment however if you already have compatible pytorch it could save disk space
+# python -m venv env
+# source env/bin/activate
 pip install -r requirements.txt
+
+# Install PyTorch compatible with your system
+# For AMD ROCm 6.3
+pip install torch==2.7.0+rocm6.3 torchvision==0.22.0+rocm6.3 torchaudio==2.7.0+rocm6.3 --extra-index-url https://download.pytorch.org/whl/rocm6.3
+
 ```
 ## Execution
 
@@ -114,6 +121,6 @@ python main.py ./my_tasks.yaml
 ## Tested Platforms
 This project was tested on:
 
-Archlinux with kernel Linux 6.14.6-arch1-1 and a AMD Radeon RX 9070 XT (replacing the cuda pytorch with ROCm alternative)
+Archlinux with kernel Linux 6.14.6-arch1-1, a AMD Radeon RX 9070 XT and Rocm related libraries installed. (Archlinux is not officially supported by Rocm and I would recommend using Cuda instead)
 
 However project and most experiments ran on Ubuntu 22.04 LTS in WSL with a nVidia 3060 mobile GPU

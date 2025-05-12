@@ -44,6 +44,9 @@ async def Search(searchedText : str,monitor : ac.LogMonitor, context : ActionCon
     filename = f"{result.split()[7]}-{timeStamp}"
 
     deviceName = monitor.deviceSelector.split()[1] if monitor.deviceSelector else ""
+    if (searchedText not in context.labels):
+        raise Exception("Label not found in context")
+    
     ac.takeScreenshot(deviceName,filename)
     results = ia.analyzeImage(deviceName,context.image_analyzer,filename,context.labels)
     #find first result that matches label
@@ -67,6 +70,10 @@ async def doomscroll(likedLabel : str,monitor : ac.LogMonitor, context : ActionC
     filename = f"{contentType}-{timeStamp}"
 
     deviceName = monitor.deviceSelector.split()[1] if monitor.deviceSelector else ""
+
+    if (likedLabel not in context.labels):
+        raise Exception("Label not found in context")
+    
 
     ac.takeScreenshot(deviceName,filename)
     results = {}

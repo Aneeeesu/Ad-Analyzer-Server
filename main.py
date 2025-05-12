@@ -67,7 +67,7 @@ async def main():
     # prepare image classifier
     image_classifier = pipeline(
     task="zero-shot-image-classification",
-    model="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",  # Replace with your chosen model
+    model="laion/CLIP-ViT-H-14-laion2B-s32B-b79K",
     device=0
     )
 
