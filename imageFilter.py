@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import datetime
 import os
 import numpy as np
+import sys
 
 # Simple hand data filter application to bit improve the quality of the data
 # does need to have categories specified inside the code
@@ -73,9 +74,15 @@ yaml.SafeLoader.add_constructor(
     lambda loader, node: loader.construct_sequence(node)
 )
 
+fileName = ""
+if len(sys.argv) > 1:
+    fileName = sys.argv[1]
+else:
+    raise Exception("No file path provided")
+
 timeSet = set()
 #read the YAML data from a file
-with open('./visualizers/mergedresults.yaml', 'r') as file:
+with open(fileName, 'r') as file:
     raw_data = yaml.safe_load(file)
 
 print(len(raw_data))
@@ -101,7 +108,7 @@ for i in range(len(raw_data)):
     ts = entry[1]
 
     if entry[0] in categories:
-        if not os.path.exists(f"./mergedImages/{entry[0]}-{ts}.png") and (entry[0] in categories):
+        if not os.path.exists(f"./.cache/{entry[0]}-{ts}.png") and (entry[0] in categories):
             missingResults += 1
         else:
             imagesToAnalyze.append({"name": f"{entry[0]}-{ts}.png","measurementIndex":measurementIndex,"time":ts,"ExpectedLabel":entry[0]})
@@ -123,7 +130,7 @@ for i in range(len(raw_data)):
 
 
 results_path = "./results/handFilteredResults.yaml"
-folder_path = "./mergedImages/"
+folder_path = "./.cache/"
 
 
 # Create window
