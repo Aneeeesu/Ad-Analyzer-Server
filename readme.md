@@ -25,7 +25,6 @@ AdLabels:
   - reklama na vzdělávání
   - reklama na aplikace
   - reklama na oblečení a doplňky
-  ...
 
 #Actions to execute with arguments
 Tasks:
@@ -34,11 +33,13 @@ Tasks:
   Device: 8ad45a96
   Action_args:
     - Anime
+  #End conditions are optional If not provided the action will be executed once
   Conditions:
     - Type: Timeout
       Timeout: 500
 
-
+#Events to execute with arguments
+#They were not ever used in actual testing as they would be annyoing to set up and provide barely any benefit
 Events:
 - Action: SendMessage
   Application: TikTok
@@ -93,21 +94,26 @@ Conditions determine whether an action/event should execute:
 
 Each condition is a function with defined expected argument types.
 
----
 
+## Preparing the Environment
+
+```bash
+# Prepare the environment
+# I recommend using a virtual environment however if you already have compatible pytorch it could save disk space
+pip install -r requirements.txt
+```
 ## Execution
 
 Run the program with or without a YAML file:
-
 ```bash
 python main.py
 # or
 python main.py ./my_tasks.yaml
 ```
 
-The system will:
+## Tested Platforms
+This project was tested on:
 
-1. Parse the YAML.
-2. Resolve actions and arguments based on app-specific maps.
-3. Evaluate conditions before executing each task.
-4. Log and perform the defined behavior over time.
+Archlinux with kernel Linux 6.14.6-arch1-1 and a AMD Radeon RX 9070 XT (replacing the cuda pytorch with ROCm alternative)
+
+However project and most experiments ran on Ubuntu 22.04 LTS in WSL with a nVidia 3060 mobile GPU

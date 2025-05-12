@@ -4,21 +4,28 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import datetime
-import time
 import numpy as np
 import seaborn as sns
 import matplotlib.patches as patches
+import time
+import textwrap
+
+#
+# This file is just for generating graphs from the data
+# It is not used in the main program
+# It can be used but it does need code to be edited and I would more recommend visualizing the data in a different way
+#
 
 
-textIndexes = [8]
+textIndexes = [5]
 
 # Read the YAML data from a file
-with open('./results/handFilteredResults.yaml', 'r') as file:
+with open('./results/handFilteredResults_original.yaml', 'r') as file:
     raw_data = yaml.safe_load(file)
 
 interesting_labels = None # ["Práce a podezřelé nabídky"]
 date_format = "%a %b %d %H:%M:%S %Y"
-interval = 300  # 300 seconds = 5 minutes
+interval = 600  # 300 seconds = 5 minutes
 
 # First pass: collect all unique labels
 labels = set()
@@ -71,8 +78,8 @@ for label in labels_list:
 heatmap_array = np.array(heatmap_data).T 
 
 # Vykresli heatmapu
-plt.figure(figsize=(12, 6))
-sns.heatmap(heatmap_array.T, xticklabels=time_points, yticklabels=labels_list, cmap="YlOrRd", cbar=False,annot=True)
+plt.figure(figsize=(12, 8))
+sns.heatmap(heatmap_array.T, xticklabels=time_points, yticklabels=['\n'.join(textwrap.wrap(label, width=20)) for label in labels_list], cmap="YlOrRd", cbar=False,annot=True)
 
 
 first = True
@@ -91,7 +98,7 @@ for i in range(len(time_points)):
     
 
 
-plt.title("Heatmapa výskytu reklam podle kategorie (5min intervaly)")
+plt.title(f"Heatmapa výskytu reklam podle kategorie ({int(interval/60)}min intervaly)")
 plt.xlabel("Čas")
 plt.ylabel("Kategorie")
 plt.xticks(rotation=45,ticks=range(0, len(time_points), 1), labels=[t.strftime('%H:%M') for i, t in enumerate(time_points)])
@@ -120,7 +127,7 @@ sorted_sizes, sorted_labels = zip(*sorted_data)
 
 plt.figure(figsize=(10, len(sorted_labels) * 0.4))
 bars = plt.barh(range(len(sorted_labels)), sorted_sizes, color='steelblue')
-plt.yticks(range(len(sorted_labels)), sorted_labels)
+plt.yticks(range(len(sorted_labels)), sorted_labels,fontsize=12)
 plt.xlabel("Počet výskytů")
 plt.title("Podíl kategorií reklam během experimentu")
 
