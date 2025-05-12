@@ -124,3 +124,11 @@ This project was tested on:
 Archlinux with kernel Linux 6.14.6-arch1-1, a AMD Radeon RX 9070 XT and Rocm related libraries installed. (Archlinux is not officially supported by Rocm and I would recommend using Cuda instead)
 
 However project and most experiments ran on Ubuntu 22.04 LTS in WSL with a nVidia 3060 mobile GPU
+
+
+## Addtional Tool examples
+```bash
+# Manual image filtering
+python imageFilter.py ./results.yaml
+```
+There are other tools in visualizers folder but they were only intended for making graphs for my thesis and are not much useful otherwise
