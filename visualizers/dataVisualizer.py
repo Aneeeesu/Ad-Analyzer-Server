@@ -17,10 +17,10 @@ import textwrap
 #
 
 
-textIndexes = [5]
+textIndexes = [1]
 
 # Read the YAML data from a file
-with open('./results/handFilteredResults_original.yaml', 'r') as file:
+with open('./results/handFilteredResults.yaml', 'r') as file:
     raw_data = yaml.safe_load(file)
 
 interesting_labels = None # ["Práce a podezřelé nabídky"]

@@ -16,7 +16,7 @@ import sys
 # does need to have categories specified inside the code
 
 
-categories = ["Advertisement"]
+categories = ["Ad","Advertisement"]
 
 # Dropdown
 # options = ["Náhodné tiktok účty",
