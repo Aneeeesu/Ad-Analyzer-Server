@@ -84,6 +84,10 @@ Each application provides a mapping of actions via `getActionMap()`:
 
 ---
 
+## Dependencies
+- Python 3.13
+- CUDA 11.8 or ROCm 6.3
+
 ## Supported Conditions
 
 Conditions determine whether an action/event should execute:
